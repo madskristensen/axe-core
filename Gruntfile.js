@@ -16,7 +16,7 @@ module.exports = function (grunt) {
 
 	grunt.initConfig({
 		pkg: grunt.file.readJSON('package.json'),
-		clean: ['dist', 'tmp'],
+		clean: ['tmp'],
 		babel: {
 			core: {
 				files: [{
@@ -134,7 +134,7 @@ module.exports = function (grunt) {
 			minify: {
 				files: [{
 					src: ['<%= concat.engine.dest %>'],
-					dest: './axe.min.js'
+					dest: 'axe.min.js'
 				}],
 				options: {
 					preserveComments: 'some',

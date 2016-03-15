@@ -1,7 +1,7 @@
 <!doctype html>
-<html lang="en" id="main">
+<html lang="klingon" id="pass1">
 <head>
-	<title>frame exclude test</title>
+	<title>html-has-lang test</title>
 	<meta charset="utf8">
 	<link rel="stylesheet" type="text/css" href="/node_modules/mocha/mocha.css" />
 	<script src="/node_modules/mocha/mocha.js"></script>
@@ -16,11 +16,9 @@
 	</script>
 </head>
 <body>
-	<div id="frame-container">
-		<iframe id="frame" src="frames/level1.html"></iframe>
-	</div>
+	<iframe id="frame1" src="frames/level1.html"></iframe>
 	<div id="mocha"></div>
-	<script src="context.js"></script>
+	<script src="html-has-lang.js"></script>
 	<script src="/test/integration/adapter.js"></script>
 </body>
 </html>
