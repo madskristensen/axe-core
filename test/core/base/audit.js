@@ -299,7 +299,7 @@ describe('Audit', function () {
 		});
 		it('should call the rule\'s run function', function (done) {
 			var targetRule = mockRules[mockRules.length - 1],
-				rule = utils.findBy(a.rules, 'id', targetRule.id),
+				rule = axe.utils.findBy(a.rules, 'id', targetRule.id),
 				called = false,
 				orig;
 
@@ -317,7 +317,7 @@ describe('Audit', function () {
 		});
 		it('should pass the option to the run function', function (done) {
 			var targetRule = mockRules[mockRules.length - 1],
-				rule = utils.findBy(a.rules, 'id', targetRule.id),
+				rule = axe.utils.findBy(a.rules, 'id', targetRule.id),
 				passed = false,
 				orig, options;
 

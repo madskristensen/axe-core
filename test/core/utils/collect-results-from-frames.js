@@ -1,5 +1,5 @@
 /*global Context */
-describe('utils.collectResultsFromFrames', function () {
+describe('axe.utils.collectResultsFromFrames', function () {
   'use strict';
 
   var fixture = document.getElementById('fixture');
@@ -30,7 +30,7 @@ describe('utils.collectResultsFromFrames', function () {
     var frame = document.createElement('iframe');
     frame.addEventListener('load', function () {
       var context = new Context(document);
-      utils.collectResultsFromFrames(context, {}, 'stuff', 'morestuff', function () {
+      axe.utils.collectResultsFromFrames(context, {}, 'stuff', 'morestuff', function () {
         assert.isTrue(logCalled);
         window.setTimeout = orig;
         axe.log = origLog;
@@ -62,7 +62,7 @@ describe('utils.collectResultsFromFrames', function () {
 		var frame = document.createElement('iframe');
 		frame.addEventListener('load', function () {
 			var context = new Context(document);
-			utils.collectResultsFromFrames(context, {}, 'rules', 'morestuff', function () {
+			axe.utils.collectResultsFromFrames(context, {}, 'rules', 'morestuff', function () {
 				done();
 			});
 		});

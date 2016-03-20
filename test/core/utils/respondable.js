@@ -1,12 +1,12 @@
-describe('utils.respondable', function () {
+describe('axe.utils.respondable', function () {
 	'use strict';
 
 	it('should be a function', function () {
-		assert.isFunction(utils.respondable);
+		assert.isFunction(axe.utils.respondable);
 	});
 
 	it('should accept 4 parameters', function () {
-		assert.lengthOf(utils.respondable, 4);
+		assert.lengthOf(axe.utils.respondable, 4);
 	});
 
 	it('should call `postMessage` on first parameter', function () {
@@ -17,7 +17,7 @@ describe('utils.respondable', function () {
 			}
 		};
 
-		utils.respondable(win, 'batman', 'nananana');
+		axe.utils.respondable(win, 'batman', 'nananana');
 		assert.isTrue(success);
 	});
 
@@ -29,7 +29,7 @@ describe('utils.respondable', function () {
 			}
 		};
 
-		utils.respondable(win, 'batman', { derp: true });
+		axe.utils.respondable(win, 'batman', { derp: true });
 
 	});
 
@@ -44,7 +44,7 @@ describe('utils.respondable', function () {
 			}
 		};
 
-		utils.respondable(win, 'batman', 'nananana');
+		axe.utils.respondable(win, 'batman', 'nananana');
 	});
 
 	it('should add `_respondable` to the message', function (done) {
@@ -57,7 +57,7 @@ describe('utils.respondable', function () {
 			}
 		};
 
-		utils.respondable(win, 'batman', 'nananana');
+		axe.utils.respondable(win, 'batman', 'nananana');
 	});
 
 	it('should create a uuid.v1 (time-based uuid)', function () {
@@ -76,7 +76,7 @@ describe('utils.respondable', function () {
 			return UUID;
 		};
 
-		utils.respondable(win, 'batman', 'nananana');
+		axe.utils.respondable(win, 'batman', 'nananana');
 		assert.isTrue(success);
 
 		window.uuid.v1 = orig;
@@ -90,7 +90,7 @@ describe('utils.respondable', function () {
 		event.data = { uuid: 1, _respondable: true};
 		event.source = window;
 
-		utils.respondable(window, 'batman', 'nananana', function () {
+		axe.utils.respondable(window, 'batman', 'nananana', function () {
 			success = false;
 		});
 		document.dispatchEvent(event);
@@ -107,7 +107,7 @@ describe('utils.respondable', function () {
 		event.data = '{ invalid object }';
 		event.source = window;
 
-		utils.respondable(window, 'batman', 'nananana', function () {
+		axe.utils.respondable(window, 'batman', 'nananana', function () {
 			success = false;
 		});
 		document.dispatchEvent(event);
@@ -123,7 +123,7 @@ describe('utils.respondable', function () {
 		event.data = '{ "_respondable": true, "topic": "batman" }';
 		event.source = window;
 
-		utils.respondable(window, 'batman', 'nananana', function () {
+		axe.utils.respondable(window, 'batman', 'nananana', function () {
 			success = false;
 		});
 		document.dispatchEvent(event);
@@ -139,7 +139,7 @@ describe('utils.respondable', function () {
 		event.data = '{ "_respondable": true, "topic": "batman", "uuid": "12" }';
 		event.source = window;
 
-		utils.respondable(window, 'batman', 'nananana', function () {
+		axe.utils.respondable(window, 'batman', 'nananana', function () {
 			success = false;
 		});
 		document.dispatchEvent(event);
@@ -155,7 +155,7 @@ describe('utils.respondable', function () {
 		event.data = '{ "uuid": "48", "topic": "batman" }';
 		event.source = window;
 
-		utils.respondable(window, 'batman', 'nananana', function () {
+		axe.utils.respondable(window, 'batman', 'nananana', function () {
 			success = false;
 		});
 		document.dispatchEvent(event);
@@ -165,18 +165,18 @@ describe('utils.respondable', function () {
 
 	describe('subscribe', function () {
 		it('should be a function', function () {
-			assert.isFunction(utils.respondable.subscribe);
+			assert.isFunction(axe.utils.respondable.subscribe);
 		});
 
 		it('should receive messages', function (done) {
 			var expected = null;
-			utils.respondable.subscribe('catman', function (data) {
+			axe.utils.respondable.subscribe('catman', function (data) {
 				assert.equal(data, expected);
 				if (data === 'yay') {
 					done();
 				}
 			});
-			utils.respondable(window, 'catman', null, function (data, respond) {
+			axe.utils.respondable(window, 'catman', null, function (data, respond) {
 				assert.isNull(data);
 				setTimeout(function () {
 					respond('yay');
@@ -185,7 +185,6 @@ describe('utils.respondable', function () {
 				}, 0);
 			});
 		});
-
 	});
 
 });

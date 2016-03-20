@@ -1,18 +1,18 @@
-describe('utils.queue', function () {
+describe('axe.utils.queue', function () {
 	'use strict';
 
 	it('should be a function', function () {
-		assert.isFunction(utils.queue);
+		assert.isFunction(axe.utils.queue);
 	});
 
 	describe('defer', function () {
 		it('should be a function', function () {
-			var q = utils.queue();
+			var q = axe.utils.queue();
 			assert.isFunction(q.defer);
 		});
 
-		it('should push onto the "utils.queue"', function (done) {
-			var q = utils.queue();
+		it('should push onto the "axe.utils.queue"', function (done) {
+			var q = axe.utils.queue();
 
 			q.defer(function (callback) {
 				setTimeout(function () {
@@ -33,7 +33,7 @@ describe('utils.queue', function () {
 		});
 
 		it('should execute callback immediately if defered functions are already complete', function () {
-			var q = utils.queue(),
+			var q = axe.utils.queue(),
 				complete = false;
 
 			q.defer(function (callback) {
@@ -52,17 +52,16 @@ describe('utils.queue', function () {
 			assert.isTrue(complete);
 
 		});
-
 	});
 
 	describe('then', function () {
 		it('should be a function', function () {
-			var q = utils.queue();
+			var q = axe.utils.queue();
 			assert.isFunction(q.then);
 		});
 
-		it('should execute immediately if utils.queue is complete', function () {
-			var q = utils.queue();
+		it('should execute immediately if axe.utils.queue is complete', function () {
+			var q = axe.utils.queue();
 			var result = false;
 
 			q.then(function () {
@@ -76,12 +75,12 @@ describe('utils.queue', function () {
 
 	describe('abort', function () {
 		it('should be a function', function () {
-			var q = utils.queue();
+			var q = axe.utils.queue();
 			assert.isFunction(q.abort);
 		});
 
 		it('should remove the `then` callback and pass all tasks as they are', function (done) {
-			var q = utils.queue();
+			var q = axe.utils.queue();
 
 			q.defer(function (callback) {
 				setTimeout(function () {
@@ -98,7 +97,6 @@ describe('utils.queue', function () {
 				assert.isFunction(data[0][0]);
 				done();
 			});
-
 		});
 
 	});

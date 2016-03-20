@@ -69,7 +69,7 @@ describe('axe._load', function () {
 			};
 			var orig = window.utils.respondable.subscribe;
 
-			utils.respondable.subscribe = function (topic, callback) {
+			axe.utils.respondable.subscribe = function (topic, callback) {
 				assert.ok(topic.indexOf('axe.') === 0);
 				assert.isFunction(callback);
 			};
@@ -92,7 +92,7 @@ describe('axe._load', function () {
 					done();
 				};
 
-				utils.respondable.subscribe = function (topic, callback) {
+				axe.utils.respondable.subscribe = function (topic, callback) {
 					callback({data: 'iscool', command: 'rules'}, function (response) {
 						// ping callback will call this response function
 						assert.ok(response);
@@ -114,7 +114,7 @@ describe('axe._load', function () {
 					done();
 				};
 
-				utils.respondable.subscribe = function (topic, callback) {
+				axe.utils.respondable.subscribe = function (topic, callback) {
 					callback({ command: 'rules', context: { include: ['monkeys'] }}, function (response) {
 						assert.ok(response);
 					});
@@ -128,7 +128,7 @@ describe('axe._load', function () {
 				window.runRules = orig;
 			});
 			it('should default include to current document if none are found', function (done) {
-				var origSub = utils.respondable.subscribe;
+				var origSub = axe.utils.respondable.subscribe;
 				var orig = window.runRules;
 				var expected = {include: [document]};
 				window.runRules = function (context) {
@@ -136,14 +136,14 @@ describe('axe._load', function () {
 					done();
 				};
 
-				utils.respondable.subscribe = function (topic, callback) {
+				axe.utils.respondable.subscribe = function (topic, callback) {
 					callback({ command: 'rules', context: { include: [] }}, function () {});
 				};
 				axe._load({
 					rules: []
 				});
 				window.runRules = orig;
-				utils.respondable.subscribe = origSub;
+				axe.utils.respondable.subscribe = origSub;
 			});
 		});
 
@@ -194,7 +194,7 @@ describe('axe._load', function () {
 					done();
 				};
 
-				utils.respondable.subscribe = function (topic, callback) {
+				axe.utils.respondable.subscribe = function (topic, callback) {
 					callback({
 						command: 'cleanup-tool'
 					}, function (response) {
@@ -215,7 +215,7 @@ describe('axe._load', function () {
 			var origSub = window.utils.respondable.subscribe;
 			var expected = {data: {include: ['monkeys']}};
 
-			utils.respondable.subscribe = function (topic, callback) {
+			axe.utils.respondable.subscribe = function (topic, callback) {
 				callback({}, function responder(data) {
 					if (topic === 'axe.start') {
 						assert.equal(data, expected);
