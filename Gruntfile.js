@@ -3,7 +3,7 @@ var testConfig = require('./build/test/config');
 module.exports = function (grunt) {
 	'use strict';
 
-	grunt.loadNpmTasks('grunt-browserify');
+	grunt.loadNpmTasks('grunt-babel');
 	grunt.loadNpmTasks('grunt-contrib-clean');
 	grunt.loadNpmTasks('grunt-contrib-concat');
 	grunt.loadNpmTasks('grunt-contrib-connect');
@@ -17,19 +17,23 @@ module.exports = function (grunt) {
 	grunt.initConfig({
 		pkg: grunt.file.readJSON('package.json'),
 		clean: ['dist', 'tmp'],
-		browserify: {
-			dist: {
-				options: {
-					transform: [
-						['babelify']
-					]
-				},
-				files: {
-					'./dist/axe.js': [
-						'./dist/axe.js'
-					]
-				}
+		babel: {
+			core: {
+				files: [{
+					expand: true,
+					cwd: 'lib/core',
+					src: ['**/*.js'],
+					dest: 'tmp/core'
+				}]
 			},
+			misc: {
+				files: [{
+					expand: true,
+					cwd: 'tmp',
+					src: ['*.js'],
+					dest: 'tmp'
+				}]
+			}
 		},
 		'update-help': {
 			options: {
@@ -47,15 +51,15 @@ module.exports = function (grunt) {
 					'bower_components/element-matches/lib/index.js',
 					'bower_components/escape-selector/lib/index.js',
 					'bower_components/node-uuid/uuid.js',
-					'lib/core/index.js',
-					'lib/core/*/index.js',
-					'lib/core/**/index.js',
-					'lib/core/**/*.js',
+					'tmp/core/index.js',
+					'tmp/core/*/index.js',
+					'tmp/core/**/index.js',
+					'tmp/core/**/*.js',
+					'tmp/core/export.js',
 					'<%= configure.rules.dest.auto %>',
-					'lib/core/export.js',
 					'lib/outro.stub'
 				],
-				dest: 'dist/axe.js',
+				dest: 'axe.js',
 				options: {
 					process: true
 				}
@@ -127,52 +131,17 @@ module.exports = function (grunt) {
 					preserveComments: 'some'
 				}
 			},
-			lib: {
+			minify: {
 				files: [{
 					src: ['<%= concat.engine.dest %>'],
-					dest: 'dist/axe.min.js'
+					dest: './axe.min.js'
 				}],
 				options: {
-					preserveComments: 'some'
+					preserveComments: 'some',
+					mangle: {
+						except: ['commons', 'utils', 'axe', 'window', 'document']
+					}
 				}
-			},
-			index: {
-				files: [{
-					src: ['tmp/index.js'],
-					dest: 'tmp/index.js'
-				}],
-				options: {
-					preserveComments: 'some'
-				}
-			}
-		},
-		nodeify: {
-			core: {
-				src: ['tmp/index.js'],
-				dest: 'dist/index.js'
-			}
-		},
-		copy: {
-			index: {
-				files: [{
-					src: ['<%= concat.engine.dest %>'],
-					dest: 'tmp/index.js'
-				}]
-			},
-			manifests: {
-				files: [{
-					src: ['package.json'],
-					dest: 'dist/'
-				}, {
-					src: ['README.md'],
-					dest: 'dist/'
-				}, {
-					src: ['bower.json'],
-					dest: 'dist/'
-				}, {
-					src: ['LICENSE'],
-					dest: 'dist/'
-				}]
 			}
 		},
 		watch: {
@@ -268,11 +237,13 @@ module.exports = function (grunt) {
 	grunt.registerTask('default', ['build']);
 
 	grunt.registerTask('build', ['clean', 'validate', 'concat:commons', 'configure',
-		'concat:engine', 'copy', 'browserify', 'uglify', 'nodeify']);
+		'babel', 'concat:engine', 'uglify']);
 
 	grunt.registerTask('test', ['build',	'testconfig', 'fixture', 'connect',
 		'mocha', 'jshint']);
 
 	grunt.registerTask('test-browser', ['build',  'testconfig', 'fixture', 'connect',
 		'test-webdriver', 'jshint']);
+
+	grunt.registerTask('dev', ['build', 'testconfig', 'connect', 'watch']);
 };
